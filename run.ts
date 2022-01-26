@@ -7,7 +7,7 @@ const file1 = Deno.args[0];
 const file2 = Deno.args[1];
 const keyIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-k");
 if(keyIdx === -1)
-  throw new Error("Missing flag '-k': Key not specified");
+  throw "Missing flag '-k': Key not specified";
 const key = Deno.args[keyIdx + 1];
 const outputIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-o");
 
