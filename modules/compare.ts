@@ -15,7 +15,7 @@ export function compareObjects(key: string, obj1: Record<string, unknown>[], obj
 
   const commonKeys: unknown[] = keysObj1.filter(key => keysObj2.includes(key));
   const selectedArr = (obj1.length > obj2.length)? obj1: obj2;
-  const trimmedObj = subtractObjects(selectedArr, key, commonKeys);
-  console.log("Trimmed object:", trimmedObj);
-  return trimmedObj;
+  const uniqueObjs = subtractObjects(selectedArr, key, commonKeys);
+  console.log("Unique objects from bigger array:", uniqueObjs);
+  return uniqueObjs;
 }
