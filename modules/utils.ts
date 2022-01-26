@@ -1,7 +1,8 @@
-export async function readFromFile(filePath: string): Promise<Record<string,unknown>[]>{
+export async function readFromFile(filePath: string, verbose=false): Promise<Record<string,unknown>[]>{
   try {
     const fileContent = await Deno.readTextFile(filePath);
-    console.log("Read file contents:", fileContent);
+    if(verbose)
+      console.log("Read file contents:", fileContent);
     return JSON.parse(fileContent);
   } catch (error) {
     console.error("Oops! Something went wrong:", error);

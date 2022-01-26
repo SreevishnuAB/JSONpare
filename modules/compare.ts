@@ -8,7 +8,7 @@ function subtractObjects(objs: Record<string, unknown>[], key: string, commonKey
   return trimmedObj;
 }
 
-export function compareObjects(key: string, obj1: Record<string, unknown>[], obj2: Record<string, unknown>[]): Record<string, unknown>[]{
+export function compareObjects(key: string, obj1: Record<string, unknown>[], obj2: Record<string, unknown>[], verbose=false): Record<string, unknown>[]{
 
   const keysObj1 = extractKeys(key, obj1);
   const keysObj2 = extractKeys(key, obj2);
@@ -16,6 +16,7 @@ export function compareObjects(key: string, obj1: Record<string, unknown>[], obj
   const commonKeys: unknown[] = keysObj1.filter(key => keysObj2.includes(key));
   const selectedArr = (obj1.length > obj2.length)? obj1: obj2;
   const uniqueObjs = subtractObjects(selectedArr, key, commonKeys);
-  console.log("Unique objects from bigger array:", uniqueObjs);
+  if(verbose)
+    console.log("Unique objects from bigger array:", uniqueObjs);
   return uniqueObjs;
 }

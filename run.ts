@@ -5,23 +5,30 @@ import { readFromFile, writeToFile, filterObjects } from './modules/utils.ts';
 
 const file1 = Deno.args[0];
 const file2 = Deno.args[1];
-const keyIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-k");
+const keyIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-k" || arg.toLowerCase() === "-kf");
 if(keyIdx === -1)
-  throw "Missing flag '-k': Key not specified";
+  throw "Missing flags '-k' and '-kf: Key not specified";
 const key = Deno.args[keyIdx + 1];
 const outputIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-o");
-const filterIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-f");
+let filterIdx = Deno.args.findIndex(arg => arg.toLowerCase() === "-f");
+const iskeyFilter = Deno.args.includes("-kf"); //filter by key. Shortcut for -k key -f key
 
-const fileContent1 = await readFromFile(file1);
-const fileContent2 = await readFromFile(file2);
+if(iskeyFilter)
+  filterIdx = keyIdx;
 
-let extractedObjs = compareObjects(key, fileContent1, fileContent2)
+const verbose = Deno.args.includes("-v") || Deno.args.includes("-V");
+
+const fileContent1 = await readFromFile(file1, verbose);
+const fileContent2 = await readFromFile(file2, verbose);
+
+let extractedObjs = compareObjects(key, fileContent1, fileContent2, verbose);
 
 if(filterIdx !== -1){
   const filterKeys = Deno.args[filterIdx + 1];
   const filterKeysArr = filterKeys.split(',');
   const filteredObjs = filterObjects(filterKeysArr, extractedObjs);
-  console.log("Filtered objects with keys", filterKeysArr, ":", filteredObjs);
+  if(verbose)
+    console.log("Filtered objects with keys", filterKeysArr, ":", filteredObjs);
   extractedObjs = filteredObjs;
 }
 
